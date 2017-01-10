@@ -1,16 +1,18 @@
-(function (window) {
+﻿(function (window) {
     //兼容
     window.URL = window.URL || window.webkitURL;
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+
+    window.AudioContext = window.AudioContext || window.mozAudioContext || window.msAudioContext;
 
     var HZRecorder = function (stream, config) {
         config = config || {};
         config.sampleBits = config.sampleBits || 8;      //采样数位 8, 16
         config.sampleRate = config.sampleRate || (44100 / 6);   //采样率(1/6 44100)
 
-        var context = new webkitAudioContext();
+        var context = new window.AudioContext();
         var audioInput = context.createMediaStreamSource(stream);
-        var recorder = context.createJavaScriptNode(4096, 1, 1);
+        var recorder = context.createScriptProcessor(4096, 1, 1);
 
         var audioData = {
             size: 0          //录音文件长度
